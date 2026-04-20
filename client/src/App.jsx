@@ -10,6 +10,7 @@ import AuthorityResponse from "./components/AuthorityResponse";
 import Impact from "./components/Impact";
 import FutureScope from "./components/FutureScope";
 import Footer from "./components/Footer";
+import LoadingScreen from "./components/LoadingScreen";
 import ToastStack from "./components/ToastStack";
 import Section from "./components/Section";
 
@@ -29,11 +30,17 @@ function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [theme, setTheme] = useState("light");
   const [toasts, setToasts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
     document.body.classList.toggle("light", theme === "light");
   }, [theme]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
@@ -49,6 +56,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+      <LoadingScreen isLoading={isLoading} />
       <Navbar
         sections={sections}
         activeSection={activeSection}
